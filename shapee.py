@@ -10,6 +10,7 @@ import random
 import zlib
 from tqdm import tqdm
 from bs4 import BeautifulSoup
+from cn2an import cn2an
 
 keyword = '廚具'
 page = 1
@@ -105,10 +106,12 @@ for i in tqdm(range(int(page))):
             # 星星趴數(/5)        
             if len(get_parent) > 2:
                 div_tags = get_parent[2].find_all('div', class_='shopee-rating-stars__lit')
-
                 percentages = [float(div['style'].split(':')[1].strip('%;')) for div in div_tags]
-                average_percentage = sum(percentages) / len(percentages)
-                get_star_rate = round(average_percentage / 20, 2)
+                if(len(percentages)>0):
+                    average_percentage = sum(percentages) / len(percentages)
+                    get_star_rate = round(average_percentage / 20, 2)
+                else:
+                    get_star_rate = None
 
                 
             # 出售量    
@@ -118,8 +121,12 @@ for i in tqdm(range(int(page))):
                     get_history_sold = j.text
                     get_history_sold = get_history_sold.replace('已售出', '')
                     get_history_sold = get_history_sold.replace(' ', '')
-
-                
+                    get_history_sold = get_history_sold.replace(',', '')
+                    if get_history_sold != None:
+                        get_history_sold = cn2an(get_history_sold, "smart")
+                    else:
+                        get_history_sold = 0
+         
                 
             # 商家地點    
             if len(get_parent) > 3:
