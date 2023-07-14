@@ -1,5 +1,3 @@
-import requests
-import json
 import pandas as pd
 import time
 from seleniumwire import webdriver  # 需安裝：pip install selenium-wire
@@ -7,7 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 import random
-import zlib
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 from cn2an import cn2an
@@ -41,7 +38,7 @@ time.sleep(random.randint(5, 10))
 ####################################################################################
 
 
-# ---------- Part 1. 主要先抓下商品名稱與連結，之後再慢慢補上詳細資料 ----------
+# ----------  抓下商品名稱與連結 ----------
 print('---------- 開始進行爬蟲 ----------')
 tStart = time.time()  # 計時開始
 # 準備用來存放資料的陣列
@@ -76,6 +73,9 @@ for i in tqdm(range(int(page))):
             theitemid = int((getID[getID.rfind('.')+1:getID.rfind('?')]))
             theshopid = int(
                 getID[getID[:getID.rfind('.')].rfind('.')+1:getID.rfind('.')])
+            
+            if(theitemid in itemid and theshopid in shopid):  # 重複爬取
+                continue
 
             # 先整理標籤
             get_parent = soup.find(
@@ -164,3 +164,7 @@ totalTime = int(tEnd - tStart)
 minute = totalTime // 60
 second = totalTime % 60
 print('資料儲存完成，花費時間（約）： ' + str(minute) + ' 分 ' + str(second) + '秒')
+
+
+
+
