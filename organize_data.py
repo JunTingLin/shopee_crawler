@@ -2,7 +2,7 @@ import pandas as pd
 import jieba
 from collections import Counter
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+from wordcloud_demo import WordCloud
 
 # ------統計商品資料--------
 

@@ -9,13 +9,14 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 from cn2an import cn2an
 
-keyword = '廚具'
-page = 1
+keyword = '手錶'
+page = 60
 ecode = 'utf-8-sig'
 
 
 # 自動下載ChromeDriver
-service = ChromeService(executable_path=ChromeDriverManager().install())
+#service = ChromeService(executable_path=ChromeDriverManager().install())
+service = ChromeService('chromedriver-win64/chromedriver.exe')
 
 # 關閉通知提醒
 options = webdriver.ChromeOptions()
@@ -25,7 +26,8 @@ options.add_experimental_option("prefs", prefs)
 # options.add_argument('blink-settings=imagesEnabled=false')
 
 # 開啟瀏覽器
-driver = webdriver.Chrome(service=service, chrome_options=options)
+#driver = webdriver.Chrome(service=service, chrome_options=options)
+driver = webdriver.Chrome(service=service, options=options)
 time.sleep(random.randint(5, 10))
 
 # 開啟網頁，進到首頁
